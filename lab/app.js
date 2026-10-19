@@ -9,6 +9,7 @@
  if(false){if(state.page>=6)state.page++;if(state.unlocked>=6)state.unlocked++;state.discussionPageAdded=true;}
  if(!state.designPageAdded){if(state.page>=1)state.page++;if(state.unlocked>=1)state.unlocked++;state.designPageAdded=true;}
  if(!state.secondRedesignAdded){if(state.page>=7)state.page++;if(state.unlocked>=7)state.unlocked++;state.secondRedesignAdded=true;}
+ if(!state.bigIdeaPageAdded){if(state.page>=8)state.page++;if(state.unlocked>=8)state.unlocked++;state.bigIdeaPageAdded=true;}
  state.page=Math.max(0,Math.min(pages.length-1,Number(state.page)||0));state.unlocked=Math.max(0,Math.min(pages.length-1,Number(state.unlocked)||0));state.visited=Array.isArray(state.visited)?state.visited.filter(id=>pages.some(p=>p.id===id)):['now'];state.path=Array.isArray(state.path)?state.path.filter(x=>['B','C','D'].includes(x)):[];state.tests=Array.isArray(state.tests)?state.tests:[];state.delay=Number.isFinite(+state.delay)?Math.max(5,Math.min(30,+state.delay)):20;
  if(wrapStart>=0&&state.unlocked>=wrapStart)state.unlocked=pages.length-1;
  state.mode='teacher';if(!canOpen(state.page))state.page=state.unlocked;
@@ -24,7 +25,7 @@
  function collect(){if(!$('#lesson'))return;$$('[data-answer]').forEach(e=>state.answers[e.dataset.answer]=e.value);if($('#student-name'))state.name=$('#student-name').value;if($('#student-period'))state.period=$('#student-period').value}
  function announce(message){$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,3800)}
  function stopAnimation(){animationRun++;if(animFrame)cancelAnimationFrame(animFrame);animFrame=null}
- function canOpen(i){return (wrapStart>=0&&i>=wrapStart&&state.unlocked>=wrapStart)||pages[i].kind==='purposeIntro'|| i<=state.unlocked||pages[i].kind==='submit'&&state.unlocked>=i-1}
+ function canOpen(i){return (wrapStart>=0&&i>=wrapStart&&state.unlocked>=wrapStart)||i<=state.unlocked||pages[i].kind==='submit'&&state.unlocked>=i-1}
  function renderLessonMap(){
  const tab=(p,i)=>`<button class="nav-button ${p.color}" style="--tab:var(--${p.color})" data-page="${i}" ${i===state.page?'aria-current="page"':''} aria-label="${esc((i+1)+' '+text(p.name)+(canOpen(i)?'':tr(', locked',', bloqueada')))}"><span class="nav-num">${i+1}</span>${esc(text(p.name))}${canOpen(i)?'':iconLock}</button>`;
  if(!L.navGroups)return pages.map(tab).join('');
